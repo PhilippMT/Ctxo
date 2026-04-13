@@ -1,2 +1,9 @@
 packages:
-  - "packages/*"
+  - packages/*
+
+ignoredBuiltDependencies:
+  - esbuild
+  - tree-sitter
+  - tree-sitter-c-sharp
+  - tree-sitter-go
+  - tree-sitter-java

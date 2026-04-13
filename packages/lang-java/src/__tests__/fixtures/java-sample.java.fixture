@@ -1,0 +1,54 @@
+package com.example.payment;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface PaymentProcessor {
+    PaymentResult process(double amount);
+}
+
+public class PaymentResult {
+    private boolean success;
+    private String message;
+
+    public PaymentResult(boolean success, String message) {
+        this.success = success;
+        this.message = message;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+}
+
+public class CardProcessor implements PaymentProcessor {
+    private final String gateway;
+
+    public CardProcessor(String gateway) {
+        this.gateway = gateway;
+    }
+
+    @Override
+    public PaymentResult process(double amount) {
+        if (amount > 0) {
+            return new PaymentResult(true, "OK");
+        }
+        return new PaymentResult(false, "Invalid");
+    }
+
+    private void log(String message) {
+        System.out.println(message);
+    }
+}
+
+public enum PaymentStatus {
+    PENDING,
+    COMPLETED,
+    FAILED
+}
+
+public record PaymentEvent(String id, double amount) {}
