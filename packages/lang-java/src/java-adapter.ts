@@ -2,6 +2,9 @@ import JavaLanguage from 'tree-sitter-java';
 import type { SyntaxNode } from 'tree-sitter';
 import { TreeSitterAdapter } from './tree-sitter-adapter.js';
 import type { SymbolNode, GraphEdge, ComplexityMetrics, SymbolKind } from '@ctxo/plugin-api';
+import { createLogger } from './logger.js';
+
+const log = createLogger('ctxo:java');
 
 const JAVA_BRANCH_TYPES = [
   'if_statement',
@@ -29,7 +32,7 @@ export class JavaAdapter extends TreeSitterAdapter {
       this.visitSymbols(tree.rootNode, filePath, pkg, symbols);
       return symbols;
     } catch (err) {
-      console.error(`[ctxo:java] Symbol extraction failed for ${filePath}: ${(err as Error).message}`);
+      log.error(`Symbol extraction failed for ${filePath}: ${(err as Error).message}`);
       return [];
     }
   }
@@ -46,7 +49,7 @@ export class JavaAdapter extends TreeSitterAdapter {
       this.visitEdges(tree.rootNode, filePath, firstSymbol, pkg, edges);
       return edges;
     } catch (err) {
-      console.error(`[ctxo:java] Edge extraction failed for ${filePath}: ${(err as Error).message}`);
+      log.error(`Edge extraction failed for ${filePath}: ${(err as Error).message}`);
       return [];
     }
   }
@@ -59,7 +62,7 @@ export class JavaAdapter extends TreeSitterAdapter {
       this.visitComplexity(tree.rootNode, filePath, pkg, metrics);
       return metrics;
     } catch (err) {
-      console.error(`[ctxo:java] Complexity extraction failed for ${filePath}: ${(err as Error).message}`);
+      log.error(`Complexity extraction failed for ${filePath}: ${(err as Error).message}`);
       return [];
     }
   }
